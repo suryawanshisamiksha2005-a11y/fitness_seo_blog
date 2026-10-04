@@ -219,8 +219,10 @@ def create_app():
 
     return app
 
+# Expose app instance for WSGI servers (Gunicorn / Render)
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     with app.app_context():
         # Auto-create tables and auto-seed if empty
         db.create_all()
