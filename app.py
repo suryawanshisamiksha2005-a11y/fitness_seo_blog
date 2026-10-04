@@ -17,7 +17,6 @@ def create_app():
         return {
             'site_name': Config.SITE_NAME,
             'site_url': Config.SITE_BASE_URL,
-            'google_verification': Config.GOOGLE_SITE_VERIFICATION,
             'current_year': datetime.now().year,
             'all_categories': Category.query.all()
         }
