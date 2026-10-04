@@ -9,8 +9,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'fitpulse-super-secret-key-2026')
     SITE_NAME = "FitPulse | Gen-Z Student Fitness & Nutrition"
     SITE_BASE_URL = os.environ.get('SITE_BASE_URL', 'http://localhost:5000')
-    GOOGLE_SITE_VERIFICATION = os.environ.get('GOOGLE_SITE_VERIFICATION', 'YOUR_GSC_VERIFICATION_TOKEN_HERE')
-    
+    GOOGLE_SITE_VERIFICATION = os.environ.get( 'GOOGLE_SITE_VERIFICATION','JYJaASZZMoXFtEga0kkotXG5sjCcCHUos-au9TCeLiA')
     # Database Configuration:
     # 1. First preference: DATABASE_URL environment variable (PostgreSQL connection string)
     # 2. Render / Supabase / Neon fix: convert postgres:// to postgresql://
