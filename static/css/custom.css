@@ -1,0 +1,71 @@
+/* Custom styles and enhancements for FitPulse */
+
+/* Ensure smooth scrolling and heading anchor offsets under sticky header */
+html {
+    scroll-padding-top: 6rem;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Article Typography Enhancements */
+.prose h2 {
+    scroll-margin-top: 6.5rem;
+}
+
+.prose h3 {
+    scroll-margin-top: 6.5rem;
+}
+
+.prose a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease-in-out;
+}
+
+.prose p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+}
+
+.prose ul, .prose ol {
+    margin-bottom: 1.5rem;
+}
+
+/* Custom selection */
+::selection {
+    background-color: #10b981;
+    color: #ffffff;
+}

@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<!-- JSON-LD Structured Data: BlogPosting Schema for Google Rich Snippets -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ post.title | tojson }},
+  "description": {{ post.meta_description | tojson }},
+  "image": [{{ post.featured_image | tojson }}],
+  "datePublished": "{{ post.created_at.isoformat() }}",
+  "dateModified": "{{ post.updated_at.isoformat() }}",
+  "author": {
+    "@type": "Person",
+    "name": {{ post.author_name | tojson }},
+    "jobTitle": {{ post.author_role | tojson }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FitPulse",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site_url }}/static/images/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ site_url }}/blog/{{ post.slug }}"
+  },
+  "keywords": {{ post.keywords | tojson }}
+}
+</script>
+
+<!-- JSON-LD Structured Data: BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ site_url }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "{{ site_url }}/blog"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ post.title | tojson }},
+      "item": "{{ site_url }}/blog/{{ post.slug }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<article class="pt-8 pb-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Breadcrumbs Navigation -->
+        <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 font-medium flex-wrap" aria-label="Breadcrumb">
+            <a href="/" class="hover:text-brand-600 transition">Home</a>
+            <span>/</span>
+            <a href="/blog" class="hover:text-brand-600 transition">Blog</a>
+            <span>/</span>
+            <a href="/blog?category={{ post.category.slug }}" class="hover:text-brand-600 transition">{{ post.category.name }}</a>
+            <span>/</span>
+            <span class="text-slate-800 font-semibold truncate max-w-[200px] sm:max-w-none">{{ post.title }}</span>
+        </nav>
+
+        <!-- Article Header -->
+        <header class="space-y-4 mb-8">
+            <div class="flex items-center gap-2">
+                <a href="/blog?category={{ post.category.slug }}" class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition">
+                    {{ post.category.name }}
+                </a>
+                <span class="text-xs text-slate-400">&bull;</span>
+                <span class="text-xs text-slate-500 font-medium">{{ post.reading_time }}</span>
+            </div>
+
+            <!-- Main Semantic H1 Tag -->
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black font-heading text-darkslate tracking-tight leading-[1.15]">
+                {{ post.title }}
+            </h1>
+
+            <!-- Meta Author & Date Row -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-b border-slate-200 py-3.5">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow-md">
+                        {{ post.author_name[:2] }}
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-darkslate">{{ post.author_name }}</div>
+                        <div class="text-xs text-slate-500">{{ post.author_role }}</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 text-xs text-slate-500">
+                    <div>
+                        <span class="block text-slate-400 uppercase text-[10px] font-bold">Published</span>
+                        <time datetime="{{ post.created_at.strftime('%Y-%m-%d') }}" class="font-semibold text-slate-700">
+                            {{ post.created_at.strftime('%B %d, %Y') }}
+                        </time>
+                    </div>
+                    <div class="border-l border-slate-200 pl-4">
+                        <span class="block text-slate-400 uppercase text-[10px] font-bold">Updated</span>
+                        <time datetime="{{ post.updated_at.strftime('%Y-%m-%d') }}" class="font-semibold text-slate-700">
+                            {{ post.updated_at.strftime('%B %d, %Y') }}
+                        </time>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Featured Image with Descriptive SEO ALT Text -->
+        <figure class="mb-10 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-100">
+            <img src="{{ post.featured_image }}" 
+                 alt="{{ post.image_alt }}" 
+                 class="w-full h-auto max-h-[500px] object-cover" 
+                 loading="eager">
+            <figcaption class="p-3 text-xs text-slate-500 bg-white border-t border-slate-100 text-center font-medium">
+                Photo &bull; <span class="italic text-slate-600">{{ post.image_alt }}</span>
+            </figcaption>
+        </figure>
+
+        <!-- Interactive College SEO Inspector Widget (Simulates Google SERP & On-Page Checklist) -->
+        <div class="mb-10 rounded-2xl bg-white border-2 border-indigo-100 shadow-md p-5 overflow-hidden">
+            <div class="flex items-center justify-between pb-3 border-b border-indigo-50">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-900 font-heading">On-Page SEO Audit Data (Assignment Review)</h3>
+                </div>
+                <button type="button" onclick="document.getElementById('seo-meta-details').classList.toggle('hidden')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800">
+                    Toggle Audit View
+                </button>
+            </div>
+
+            <div id="seo-meta-details" class="pt-4 space-y-4 text-xs">
+                <!-- Google SERP Snippet Preview -->
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Google SERP Snippet Simulation</span>
+                    <div class="text-[12px] text-slate-700 font-mono mb-0.5 truncate">{{ site_url }}/blog/{{ post.slug }}</div>
+                    <div class="text-base text-blue-700 font-medium hover:underline cursor-pointer font-sans truncate">{{ post.meta_title }}</div>
+                    <div class="text-xs text-slate-600 mt-1 leading-snug font-sans">{{ post.meta_description }}</div>
+                </div>
+
+                <!-- SEO Field Details Table -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-700">
+                    <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                        <strong class="text-indigo-900 block mb-0.5">Focus Keyword:</strong>
+                        <code class="text-emerald-700 font-bold bg-emerald-50 px-1 py-0.5 rounded">{{ post.focus_keyword }}</code>
+                    </div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                        <strong class="text-indigo-900 block mb-0.5">Meta Title Length:</strong>
+                        <span>{{ post.meta_title|length }} / 60 characters <span class="text-emerald-600 font-bold">(Optimal for Google)</span></span>
+                    </div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                        <strong class="text-indigo-900 block mb-0.5">Meta Description Length:</strong>
+                        <span>{{ post.meta_description|length }} / 160 characters <span class="text-emerald-600 font-bold">(Optimal for CTR)</span></span>
+                    </div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                        <strong class="text-indigo-900 block mb-0.5">Secondary Keywords:</strong>
+                        <span class="text-slate-600 truncate block">{{ post.keywords }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Article Body Content -->
+        <div class="prose prose-lg prose-slate max-w-none text-slate-700 leading-relaxed font-sans">
+            {{ post.content | safe }}
+        </div>
+
+        <!-- Internal Links Callout Bar -->
+        <div class="my-10 p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-slate-50 border border-emerald-200">
+            <h4 class="font-heading font-bold text-darkslate text-base mb-2">Explore Related Student Fitness Guides</h4>
+            <p class="text-xs text-slate-600 mb-4">Improve your campus wellness routine with our interconnected guides:</p>
+            <div class="flex flex-wrap gap-2">
+                {% for related in related_posts %}
+                <a href="/blog/{{ related.slug }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:text-emerald-600 hover:border-emerald-300 transition shadow-sm">
+                    <span>&bull; {{ related.title }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Next / Previous Article Navigation -->
+        <div class="my-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% if prev_post %}
+            <a href="/blog/{{ prev_post.slug }}" class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md transition group flex flex-col justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                    <svg class="w-3 h-3 text-slate-400 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    Previous Article
+                </span>
+                <span class="text-xs font-bold text-darkslate group-hover:text-emerald-600 transition-colors mt-1 line-clamp-2">{{ prev_post.title }}</span>
+            </a>
+            {% else %}
+            <div></div>
+            {% endif %}
+
+            {% if next_post %}
+            <a href="/blog/{{ next_post.slug }}" class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md transition group flex flex-col justify-between text-right">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-end gap-1">
+                    Next Article
+                    <svg class="w-3 h-3 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </span>
+                <span class="text-xs font-bold text-darkslate group-hover:text-emerald-600 transition-colors mt-1 line-clamp-2">{{ next_post.title }}</span>
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Author Bio Box (E-E-A-T Signal for SEO) -->
+        <div class="mt-12 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 to-limepulse text-white font-extrabold flex items-center justify-center text-xl flex-shrink-0 shadow-md">
+                {{ post.author_name[:2] }}
+            </div>
+            <div class="space-y-2 text-center sm:text-left">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <h3 class="text-lg font-bold font-heading text-darkslate">{{ post.author_name }}</h3>
+                    <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold self-center sm:self-auto">{{ post.author_role }}</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Alex specializes in student nutritional physiology, high-yield dorm cooking techniques, and calisthenics fitness protocols tailored for university students with packed academic schedules.
+                </p>
+            </div>
+        </div>
+
+        <!-- Social Share & Return Link -->
+        <div class="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="/blog" class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-600 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <span>Back to All Articles</span>
+            </a>
+
+            <!-- Social Share Simulation -->
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-slate-500 mr-1">Share:</span>
+                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Article URL copied to clipboard!');" 
+                        class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center gap-1.5" title="Copy link">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>Copy URL</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</article>
+
+<!-- Related Articles Section -->
+<section class="bg-slate-100/70 border-t border-slate-200 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <span class="text-xs uppercase font-extrabold tracking-widest text-emerald-600">CONTINUE READING</span>
+            <h2 class="text-2xl font-extrabold font-heading text-darkslate mt-1">Recommended Next Guides</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for rel in related_posts %}
+            <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col group">
+                <a href="/blog/{{ rel.slug }}" class="aspect-[16/10] overflow-hidden block">
+                    <img src="{{ rel.featured_image }}" alt="{{ rel.image_alt }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </a>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">{{ rel.category.name }}</span>
+                        <h3 class="text-base font-bold font-heading text-darkslate group-hover:text-emerald-600 transition-colors mt-1 line-clamp-2">
+                            <a href="/blog/{{ rel.slug }}">{{ rel.title }}</a>
+                        </h3>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 mt-4 flex items-center justify-between text-xs text-slate-500">
+                        <span>{{ rel.reading_time }}</span>
+                        <a href="/blog/{{ rel.slug }}" class="text-emerald-600 font-bold group-hover:underline">Read &rarr;</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

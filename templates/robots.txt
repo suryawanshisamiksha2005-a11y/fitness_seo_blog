@@ -1,0 +1,9 @@
+# Robots.txt for FitPulse Fitness & Nutrition Blog
+# Digital Marketing & SEO College Assignment
+
+User-agent: *
+Allow: /
+Disallow: /contact?*
+
+# Host Sitemap reference
+Sitemap: {{ sitemap_url }}

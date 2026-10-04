@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Static Core Pages -->
+  {% for page in static_pages %}
+  <url>
+    <loc>{{ page.loc }}</loc>
+    <lastmod>{{ page.lastmod }}</lastmod>
+    <changefreq>{{ page.changefreq }}</changefreq>
+    <priority>{{ page.priority }}</priority>
+  </url>
+  {% endfor %}
+
+  <!-- Blog Article Pages (High Priority for Search Engines) -->
+  {% for post in posts %}
+  <url>
+    <loc>{{ base_url }}/blog/{{ post.slug }}</loc>
+    <lastmod>{{ post.updated_at.strftime('%Y-%m-%d') }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>{{ '0.95' if post.is_featured else '0.85' }}</priority>
+  </url>
+  {% endfor %}
+
+  <!-- Category Filter Pages -->
+  {% for cat in categories %}
+  <url>
+    <loc>{{ base_url }}/blog?category={{ cat.slug }}</loc>
+    <lastmod>{{ page_lastmod if page_lastmod else '2026-10-01' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  {% endfor %}
+</urlset>
