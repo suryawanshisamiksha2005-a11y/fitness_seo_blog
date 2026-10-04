@@ -16,9 +16,6 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ seo.canonical if seo and seo.canonical else site_url }}">
     
-    <!-- Google Search Console Site Verification Meta Tag (Assignment Requirement) -->
-    <meta name="google-site-verification" content="{{ google_verification }}">
-    
     <!-- Open Graph / Facebook / LinkedIn Meta Tags -->
     <meta property="og:type" content="{{ seo.og_type if seo and seo.og_type else 'website' }}">
     <meta property="og:url" content="{{ seo.canonical if seo and seo.canonical else site_url }}">
